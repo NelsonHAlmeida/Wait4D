@@ -1,0 +1,23 @@
+object frmFundo: TfrmFundo
+  Left = 0
+  Top = 0
+  AlphaBlend = True
+  AlphaBlendValue = 160
+  BorderStyle = bsNone
+  Caption = 'frmFundo'
+  ClientHeight = 444
+  ClientWidth = 699
+  Color = clBlack
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poOwnerFormCenter
+  Visible = True
+  WindowState = wsMaximized
+  OnClose = FormClose
+  PixelsPerInch = 96
+  TextHeight = 13
+end
