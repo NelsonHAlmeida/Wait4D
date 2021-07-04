@@ -14,6 +14,8 @@ object frmProgress: TfrmProgress
   OldCreateOrder = False
   Position = poOwnerFormCenter
   Visible = True
+  OnClose = FormClose
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object Shape1: TShape

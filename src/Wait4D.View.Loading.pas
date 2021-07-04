@@ -26,11 +26,17 @@ type
     ActivityIndicator1: TActivityIndicator;
     lblTitulo: TLabel;
     lblDescricao: TLabel;
+    procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
+    FNotificacao : iWait4DNotificacao;
   public
     { Public declarations }
-    procedure Notificar(aNotificacao: iWait4DNotificacao);
+//    constructor Create;
+//    function Notificacao : iWait4DNotificacao;
+    procedure Notificar;
     function Ref: iWait4DNotificador;
 
   end;
@@ -41,18 +47,43 @@ var
 implementation
 
 uses
-  System.Threading;
+  System.Threading, Wait4D.Notificacao;
 
 {$R *.dfm}
 
 { TfrmLoading }
 
-procedure TfrmLoading.Notificar(aNotificacao: iWait4DNotificacao);
+//constructor TfrmLoading.Create;
+//begin
+//  if not Assigned(FNotificacao) then
+//    FNotificacao := TWait4DNotificacao.New;
+//end;
+
+procedure TfrmLoading.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Action := TCloseAction.caFree;
+  frmLoading := nil;
+end;
+
+procedure TfrmLoading.FormCreate(Sender: TObject);
+begin
+  if not Assigned(FNotificacao) then
+    FNotificacao := TWait4DNotificacao.New;
+  if FNotificacao.Titulo = EmptyStr then
+    FNotificacao.Titulo('Aguarde...').Descricao('Processando...');
+end;
+
+procedure TfrmLoading.FormDestroy(Sender: TObject);
+begin
+//
+end;
+
+procedure TfrmLoading.Notificar;
 begin
   TThread.Queue(nil, procedure()
     begin
-      lblTitulo.Caption    := aNotificacao.Titulo;
-      lblDescricao.Caption := aNotificacao.Descricao;
+      lblTitulo.Caption    := FNotificacao.Titulo;
+      lblDescricao.Caption := FNotificacao.Descricao;
     end
   );
 end;

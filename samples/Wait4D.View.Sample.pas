@@ -20,17 +20,16 @@ uses
 type
   TPageSample = class(TForm)
     btnLoading: TButton;
-    btnProcess: TButton;
+    btnProgress: TButton;
+    procedure btnProgressClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+
+    procedure ProcessLoading;
+    procedure ProcessProgress;
     procedure btnLoadingClick(Sender: TObject);
-    procedure btnProcessClick(Sender: TObject);
   private
+    FWait4D : iWait4D;
     { Private declarations }
-    procedure Notificar(aNotificacao: iWait4DNotificacao;
-                        aNotificador: iWait4DNotificador);
-
-    procedure Loading(aNotificador: iWait4DNotificador = nil);
-
-    procedure Process(aNotificador: iWait4DNotificador = nil);
   public
     { Public declarations }
   end;
@@ -42,62 +41,64 @@ implementation
 
 {$R *.dfm}
 
-uses Wait4D.Services.Tasks;
-
 { TPageSample }
 
 procedure TPageSample.btnLoadingClick(Sender: TObject);
 begin
-  TServiceTask.ExecutaLoading(Loading, Self);
+// change title and description displayed loading
+//  FWait4D.Notificacao.Titulo('Wait...').Descricao('Processing...');
+
+  FWait4D
+    .Form(Self)
+    .Process(ProcessLoading)
+    .Loading
+    .Executar;
 end;
 
-procedure TPageSample.Notificar(aNotificacao: iWait4DNotificacao;
-  aNotificador: iWait4DNotificador);
+procedure TPageSample.btnProgressClick(Sender: TObject);
 begin
-  if aNotificador <> nil then
-     aNotificador.Notificar(aNotificacao);
+// change title and description displayed progress
+  FWait4D.Notificacao.Titulo('Wait...').Descricao('Processing...');
+  FWait4D
+    .Form(Self)
+    .Process(ProcessProgress)
+    .Progress
+    .Executar;
 end;
 
-procedure TPageSample.Process(aNotificador: iWait4DNotificador);
+procedure TPageSample.ProcessLoading;
+begin
+// process executed in task during loading execution
+  Sleep(2000);
+// change title and description displayed loading
+  FWait4D
+    .Notificacao
+      .Titulo('Title...')
+      .Descricao('Description...');
+  FWait4D.Notificar;
+//
+  Sleep(2000);
+end;
+
+procedure TPageSample.FormCreate(Sender: TObject);
+begin
+  FWait4D := TWait4D.New;
+end;
+
+procedure TPageSample.ProcessProgress;
 var
-  LNotificacao: iWait4DNotificacao;
-  i, LCount: Integer;
+  LCount, i : Integer;
 begin
-  LNotificacao :=
-    TWait4D
-     .New
-      .Titulo('Sincronizando...');
-
-  LCount:= 100;
-  LNotificacao.PosicaoMaxima(LCount);
-  for i := 1 to 100 do
+  Sleep(500);
+  LCount:= 20;
+  FWait4D.Notificacao.PosicaoMaxima(LCount);
+  for i := 1 to LCount do
   begin
-    LNotificacao.Descricao('Registro ' + i.ToString + ' de ' + LCount.ToString);
-    LNotificacao.PosicaoAtual(i);
-    Notificar(LNotificacao, aNotificador);
+    FWait4D.Notificacao.Descricao('Registro ' + i.ToString + ' de ' + LCount.ToString);
+    FWait4D.Notificacao.PosicaoAtual(i);
+    FWait4D.Notificar;
     Sleep(200);
   end;
-
-end;
-
-procedure TPageSample.btnProcessClick(Sender: TObject);
-begin
-  TServiceTask.ExecutaProgress(Process, Self);
-end;
-
-procedure TPageSample.Loading(aNotificador: iWait4DNotificador);
-var
-  LNotificacao: iWait4DNotificacao;
-begin
-  LNotificacao :=
-    TWait4D
-     .New
-      .Titulo('Aguarde...')
-      .Descricao('Carregando...');
-
-  Notificar(LNotificacao, aNotificador);
-
-  Sleep(3000);
 end;
 
 initialization

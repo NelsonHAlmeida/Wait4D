@@ -11,6 +11,7 @@ object PageSample: TPageSample
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object btnLoading: TButton
@@ -22,13 +23,13 @@ object PageSample: TPageSample
     TabOrder = 0
     OnClick = btnLoadingClick
   end
-  object btnProcess: TButton
+  object btnProgress: TButton
     Left = 360
     Top = 16
     Width = 75
     Height = 25
-    Caption = 'Process'
+    Caption = 'Progress'
     TabOrder = 1
-    OnClick = btnProcessClick
+    OnClick = btnProgressClick
   end
 end

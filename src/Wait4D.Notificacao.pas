@@ -30,6 +30,9 @@ type
 
   end;
 
+var
+   vWait: iWait4DNotificacao;
+
 implementation
 
 { TModelUtilsNotificacao }
@@ -59,7 +62,9 @@ end;
 
 class function TWait4DNotificacao.New: iWait4DNotificacao;
 begin
-  Result := Self.Create;
+  if not Assigned(vWait) then
+     vWait:= Self.Create;
+  Result := vWait;
 end;
 
 function TWait4DNotificacao.PosicaoAtual: integer;

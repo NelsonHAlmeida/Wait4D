@@ -12,15 +12,15 @@ uses
   System.SysUtils,
   System.Threading;
 
-type TExecInTask = reference to procedure (aNotificador: iWait4DNotificador);
-
 type TServiceTask = class
   private
-//    class var FController: IController;
-    class procedure Executar(aProc: TExecInTask; aNotificador: iWait4DNotificador; aForm: TForm);
+
   public
-    class procedure ExecutaLoading(aProc : TExecInTask; aForm: TForm);
-    class procedure ExecutaProgress(aProc : TExecInTask; aForm: TForm);
+    class function ExecutaLoading(aForm: TForm) : iWait4DNotificador;
+    class function ExecutaProgress(aForm: TForm) : iWait4DNotificador;
+    class procedure Executar(aProc: TProc;
+                             aNotificador: iWait4DNotificador;
+                             aForm: TForm);
 end;
 
 implementation
@@ -34,19 +34,19 @@ uses
 
 { TServiceTask }
 
-class procedure TServiceTask.ExecutaLoading(aProc: TExecInTask; aForm: TForm);
+class function TServiceTask.ExecutaLoading(aForm: TForm) : iWait4DNotificador;
 begin
   frmLoading := TfrmLoading.Create(aForm);
-  Executar(aProc, frmLoading, aForm);
+  Result := frmLoading;
 end;
 
-class procedure TServiceTask.ExecutaProgress(aProc: TExecInTask; aForm: TForm);
+class function TServiceTask.ExecutaProgress(aForm: TForm) : iWait4DNotificador;
 begin
   frmProgress := TfrmProgress.Create(aForm);
-  Executar(aProc, frmProgress, aForm);
+  Result := frmProgress;
 end;
 
-class procedure TServiceTask.Executar(aProc: TExecInTask;
+class procedure TServiceTask.Executar(aProc: TProc;
   aNotificador: iWait4DNotificador; aForm: TForm);
 var
   LTask: iTask;
@@ -61,18 +61,18 @@ begin
   frmFundo.Height:= aForm.Height-8;
   frmFundo.Show;
 
-//  JanelasCongeladas:= DisableTaskWindows(aForm.Handle);
   JanelasCongeladas:= DisableTaskWindows(TForm(aNotificador.Ref).Handle);
   TForm(aNotificador.Ref).Left:= frmFundo.Left + Trunc((aform.Width-16-TForm(aNotificador.Ref).Width)/2);
   TForm(aNotificador.Ref).Top:= frmFundo.Top + 30 + Trunc((aform.Height-40-TForm(aNotificador.Ref).Height)/2);
 
   aNotificador.Show;
+  aNotificador.Notificar;
 
   LTask := TTask.Create(procedure()
     begin
       try
         try
-          aProc(aNotificador);
+          aProc;
         except
           on E:Exception do
           begin
@@ -94,6 +94,5 @@ begin
   );
   LTask.Start;
 end;
-
 
 end.
