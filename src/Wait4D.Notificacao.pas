@@ -8,15 +8,18 @@ uses
 type
   TWait4DNotificacao = class(TInterfacedObject, iWait4DNotificacao)
   private
+    [weak]
+    FParent : iWait4D;
+
     FTitulo : string;
     FDescricao : string;
     FPosicaoAtual : integer;
     FPosicaoMaxima : integer;
 
   public
-    constructor Create;
+    constructor Create(aParent : iWait4D);
     destructor Destroy; override;
-    class function New: iWait4DNotificacao;
+    class function New(aParent : iWait4D): iWait4DNotificacao;
 
     function Titulo : string; overload;
     function Descricao : string; overload;
@@ -28,6 +31,8 @@ type
     function PosicaoAtual(aPosicaoAtual : integer) : iWait4DNotificacao; overload;
     function PosicaoMaxima(aPosicaoMaxima : integer) : iWait4DNotificacao; overload;
 
+    function &End : iWait4D;
+
   end;
 
 var
@@ -37,9 +42,14 @@ implementation
 
 { TModelUtilsNotificacao }
 
-constructor TWait4DNotificacao.Create;
+function TWait4DNotificacao.&End: iWait4D;
 begin
+  Result := FParent;
+end;
 
+constructor TWait4DNotificacao.Create(aParent : iWait4D);
+begin
+  FParent := aParent;
 end;
 
 function TWait4DNotificacao.Descricao(
@@ -60,10 +70,10 @@ begin
   inherited;
 end;
 
-class function TWait4DNotificacao.New: iWait4DNotificacao;
+class function TWait4DNotificacao.New(aParent : iWait4D): iWait4DNotificacao;
 begin
   if not Assigned(vWait) then
-     vWait:= Self.Create;
+     vWait:= Self.Create(aParent);
   Result := vWait;
 end;
 

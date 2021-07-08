@@ -58,7 +58,7 @@ end;
 procedure TfrmProgress.FormCreate(Sender: TObject);
 begin
   if not Assigned(FNotificacao) then
-    FNotificacao := TWait4DNotificacao.New;
+    FNotificacao := TWait4DNotificacao.New(nil);
   FNotificacao.PosicaoAtual(0);
   if FNotificacao.Titulo = EmptyStr then
     FNotificacao.Titulo('Sincronizando...').Descricao('');

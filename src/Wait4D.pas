@@ -77,7 +77,7 @@ end;
 function TWait4D.Notificacao: iWait4DNotificacao;
 begin
   if not Assigned(FNotificacao) then
-    FNotificacao := TWait4DNotificacao.New;
+    FNotificacao := TWait4DNotificacao.New(Self);
   Result := FNotificacao;
 end;
 

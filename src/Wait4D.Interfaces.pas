@@ -19,6 +19,8 @@ type
     function Descricao(aDescricao : string) : iWait4DNotificacao; overload;
     function PosicaoAtual(aPosicaoAtual : integer) : iWait4DNotificacao; overload;
     function PosicaoMaxima(aPosicaoMaxima : integer) : iWait4DNotificacao; overload;
+
+    function &End : iWait4D;
   end;
 
   iWait4DNotificador = interface

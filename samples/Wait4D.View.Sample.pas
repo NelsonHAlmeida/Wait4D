@@ -46,20 +46,32 @@ implementation
 procedure TPageSample.btnLoadingClick(Sender: TObject);
 begin
 // change title and description displayed loading
-//  FWait4D.Notificacao.Titulo('Wait...').Descricao('Processing...');
-
   FWait4D
+    .Notificacao
+      .Titulo('Wait...')
+      .Descricao('Processing...')
+    .&End
     .Form(Self)
     .Process(ProcessLoading)
     .Loading
     .Executar;
+
+//  FWait4D
+//    .Form(Self)
+//    .Process(ProcessLoading)
+//    .Loading
+//    .Executar;
 end;
 
 procedure TPageSample.btnProgressClick(Sender: TObject);
 begin
 // change title and description displayed progress
-  FWait4D.Notificacao.Titulo('Wait...').Descricao('Processing...');
+//  FWait4D.Notificacao.Titulo('Wait...').Descricao('Processing...');
   FWait4D
+    .Notificacao
+      .Titulo('Wait...')
+      .Descricao('Processing...')
+    .&End
     .Form(Self)
     .Process(ProcessProgress)
     .Progress
