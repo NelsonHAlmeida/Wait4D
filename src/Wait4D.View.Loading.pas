@@ -27,15 +27,10 @@ type
     lblTitulo: TLabel;
     lblDescricao: TLabel;
     procedure FormCreate(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
-    { Private declarations }
     FNotificacao : iWait4DNotificacao;
   public
-    { Public declarations }
-//    constructor Create;
-//    function Notificacao : iWait4DNotificacao;
     procedure Notificar;
     function Ref: iWait4DNotificador;
 
@@ -53,14 +48,9 @@ uses
 
 { TfrmLoading }
 
-//constructor TfrmLoading.Create;
-//begin
-//  if not Assigned(FNotificacao) then
-//    FNotificacao := TWait4DNotificacao.New;
-//end;
-
 procedure TfrmLoading.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
+  FNotificacao.Titulo(EmptyStr);
   Action := TCloseAction.caFree;
   frmLoading := nil;
 end;
@@ -71,11 +61,6 @@ begin
     FNotificacao := TWait4DNotificacao.New;
   if FNotificacao.Titulo = EmptyStr then
     FNotificacao.Titulo('Aguarde...').Descricao('Processando...');
-end;
-
-procedure TfrmLoading.FormDestroy(Sender: TObject);
-begin
-//
 end;
 
 procedure TfrmLoading.Notificar;

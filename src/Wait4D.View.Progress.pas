@@ -30,10 +30,8 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
-    { Private declarations }
     FNotificacao : iWait4DNotificacao;
   public
-    { Public declarations }
     procedure Notificar;
     function Ref: iWait4DNotificador;
   end;
@@ -52,6 +50,7 @@ uses
 
 procedure TfrmProgress.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
+  FNotificacao.Titulo(EmptyStr);
   Action:= caFree;
   frmProgress:= nil;
 end;

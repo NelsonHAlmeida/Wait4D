@@ -15,7 +15,6 @@ object frmLoading: TfrmLoading
   Position = poDefault
   OnClose = FormClose
   OnCreate = FormCreate
-  OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 13
   object Shape1: TShape
