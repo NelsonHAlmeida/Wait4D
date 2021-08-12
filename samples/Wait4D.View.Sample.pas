@@ -39,6 +39,9 @@ var
 
 implementation
 
+uses
+  Wait4DTeste;
+
 {$R *.dfm}
 
 { TPageSample }
@@ -98,19 +101,8 @@ begin
 end;
 
 procedure TPageSample.ProcessProgress;
-var
-  LCount, i : Integer;
 begin
-  Sleep(500);
-  LCount:= 20;
-  FWait4D.Notificacao.PosicaoMaxima(LCount);
-  for i := 1 to LCount do
-  begin
-    FWait4D.Notificacao.Descricao('Registro ' + i.ToString + ' de ' + LCount.ToString);
-    FWait4D.Notificacao.PosicaoAtual(i);
-    FWait4D.Notificar;
-    Sleep(200);
-  end;
+  TModelWait4DTeste.New(FWait4D).Preencher;
 end;
 
 initialization

@@ -9,7 +9,8 @@ uses
   Wait4D.View.Progress in '..\src\Wait4D.View.Progress.pas' {frmProgress},
   Wait4D.Services.Tasks in '..\src\Wait4D.Services.Tasks.pas',
   Wait4D.Notificacao in '..\src\Wait4D.Notificacao.pas',
-  Wait4D in '..\src\Wait4D.pas';
+  Wait4D in '..\src\Wait4D.pas',
+  Wait4DTeste in '..\src\Wait4DTeste.pas';
 
 {$R *.res}
 

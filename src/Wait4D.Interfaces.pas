@@ -42,6 +42,10 @@ type
     procedure Executar;
   end;
 
+  iWait4DTeste = interface
+    function Preencher : iWait4DTeste;
+  end;
+
 implementation
 
 end.
