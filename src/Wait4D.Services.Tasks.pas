@@ -6,7 +6,7 @@ interface
 uses
   Forms,
 
-  Wait4D.Interfaces,
+  Wait4D,
 
   System.Classes,
   System.SysUtils,
@@ -16,11 +16,12 @@ type TServiceTask = class
   private
 
   public
-    class function ExecutaLoading(aForm: TForm) : iWait4DNotificador;
-    class function ExecutaProgress(aForm: TForm) : iWait4DNotificador;
-    class procedure Executar(aProc: TProc;
-                             aNotificador: iWait4DNotificador;
-                             aForm: TForm);
+    class function ExecutaLoading : iWait4DNotificador;
+    class function ExecutaProgress : iWait4DNotificador;
+    class procedure Executar(aProc : TProc;
+                             aNotificador : iWait4DNotificador;
+                             aNotificacao : iWait4DNotificacao;
+                             aForm : TForm);
 end;
 
 implementation
@@ -34,41 +35,43 @@ uses
 
 { TServiceTask }
 
-class function TServiceTask.ExecutaLoading(aForm: TForm) : iWait4DNotificador;
+class function TServiceTask.ExecutaLoading : iWait4DNotificador;
 begin
-  frmLoading := TfrmLoading.Create(aForm);
-  Result := frmLoading;
+  Result := TfrmLoading.Create(nil);
 end;
 
-class function TServiceTask.ExecutaProgress(aForm: TForm) : iWait4DNotificador;
+class function TServiceTask.ExecutaProgress: iWait4DNotificador;
 begin
-  frmProgress := TfrmProgress.Create(aForm);
-  Result := frmProgress;
+  Result := TfrmProgress.Create(nil);
 end;
 
-class procedure TServiceTask.Executar(aProc: TProc;
-  aNotificador: iWait4DNotificador; aForm: TForm);
+class procedure TServiceTask.Executar(aProc : TProc;
+                                      aNotificador : iWait4DNotificador;
+                                      aNotificacao : iWait4DNotificacao;
+                                      aForm: TForm);
 var
   LTask: iTask;
   JanelasCongeladas: Pointer;
+  LFundo : TForm;
 begin
 // Esmaecer Tela
-  if frmFundo = nil then
-    frmFundo:= TfrmFundo.Create(Application);
-  frmFundo.Left:= aForm.Left+8;
-  frmFundo.Top:= aForm.Top;
-  frmFundo.Width:= aForm.Width-16;
-  frmFundo.Height:= aForm.Height-8;
-  frmFundo.Show;
+//  if frmFundo = nil then
+  LFundo:= TfrmFundo.Create(nil);
+  LFundo.Left:= aForm.Left+8;
+  LFundo.Top:= aForm.Top;
+  LFundo.Width:= aForm.Width-16;
+  LFundo.Height:= aForm.Height-8;
+  LFundo.Show;
 
   JanelasCongeladas:= DisableTaskWindows(TForm(aNotificador.Ref).Handle);
-  TForm(aNotificador.Ref).Left:= frmFundo.Left + Trunc((aform.Width-16-TForm(aNotificador.Ref).Width)/2);
-  TForm(aNotificador.Ref).Top:= frmFundo.Top + 30 + Trunc((aform.Height-40-TForm(aNotificador.Ref).Height)/2);
+  TForm(aNotificador.Ref).Left:= LFundo.Left + Trunc((aform.Width-16-TForm(aNotificador.Ref).Width)/2);
+  TForm(aNotificador.Ref).Top:= LFundo.Top + 30 + Trunc((aform.Height-40-TForm(aNotificador.Ref).Height)/2);
 
   aNotificador.Show;
-  aNotificador.Notificar;
+  aNotificador.Notificar(aNotificacao);
 
-  LTask := TTask.Create(procedure()
+  LTask := TTask.Create(
+  procedure
     begin
       try
         try
@@ -80,18 +83,19 @@ begin
             procedure
             begin
               ShowMessage(E.Message);
+//              raise Exception.Create(E.Message);
             end);
 
           end;
         end;
 
       finally
-        aNotificador.Close;
-        frmFundo.Close;
         EnableTaskWindows(JanelasCongeladas);
+        LFundo.Close;
+        aNotificador.Close;
+        LFundo := nil;
       end;
-    end
-  );
+    end);
   LTask.Start;
 end;
 
