@@ -3,7 +3,7 @@ unit Wait4D.Notificacao;
 interface
 
 uses
-  Wait4D.Interfaces;
+  Wait4D;
 
 type
   TWait4DNotificacao = class(TInterfacedObject, iWait4DNotificacao)
@@ -34,9 +34,6 @@ type
     function &End : iWait4D;
 
   end;
-
-var
-   vWait: iWait4DNotificacao;
 
 implementation
 
@@ -72,9 +69,7 @@ end;
 
 class function TWait4DNotificacao.New(aParent : iWait4D): iWait4DNotificacao;
 begin
-  if not Assigned(vWait) then
-     vWait:= Self.Create(aParent);
-  Result := vWait;
+  Result := Self.Create(aParent);
 end;
 
 function TWait4DNotificacao.PosicaoAtual: integer;

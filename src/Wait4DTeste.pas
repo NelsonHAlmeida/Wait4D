@@ -4,7 +4,7 @@ interface
 
 uses
   System.SysUtils,
-  Wait4D.Interfaces;
+  Wait4D;
 
 type
   TModelWait4DTeste = class(TInterfacedObject, iWait4DTeste)

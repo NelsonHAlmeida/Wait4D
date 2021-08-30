@@ -23,9 +23,6 @@ type
     { Public declarations }
   end;
 
-var
-  frmFundo: TfrmFundo;
-
 implementation
 
 {$R *.dfm}
@@ -33,7 +30,6 @@ implementation
 procedure TfrmFundo.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   Action:= caFree;
-  frmFundo:= nil;
 end;
 
 end.

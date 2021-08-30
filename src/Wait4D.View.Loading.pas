@@ -3,7 +3,7 @@ unit Wait4D.View.Loading;
 interface
 
 uses
-  Wait4D.Interfaces,
+  Wait4D,
 
   System.Classes,
   System.SysUtils,
@@ -26,18 +26,14 @@ type
     ActivityIndicator1: TActivityIndicator;
     lblTitulo: TLabel;
     lblDescricao: TLabel;
-    procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
-    FNotificacao : iWait4DNotificacao;
+
   public
-    procedure Notificar;
+    procedure Notificar(aValue : iWait4DNotificacao);
     function Ref: iWait4DNotificador;
 
   end;
-
-var
-  frmLoading: TfrmLoading;
 
 implementation
 
@@ -50,25 +46,16 @@ uses
 
 procedure TfrmLoading.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  FNotificacao.Titulo(EmptyStr);
   Action := TCloseAction.caFree;
-  frmLoading := nil;
 end;
 
-procedure TfrmLoading.FormCreate(Sender: TObject);
+procedure TfrmLoading.Notificar(aValue : iWait4DNotificacao);
 begin
-  if not Assigned(FNotificacao) then
-    FNotificacao := TWait4DNotificacao.New(nil);
-  if FNotificacao.Titulo = EmptyStr then
-    FNotificacao.Titulo('Aguarde...').Descricao('Processando...');
-end;
-
-procedure TfrmLoading.Notificar;
-begin
-  TThread.Queue(nil, procedure()
+  TThread.Queue(nil,
+  procedure
     begin
-      lblTitulo.Caption    := FNotificacao.Titulo;
-      lblDescricao.Caption := FNotificacao.Descricao;
+      lblTitulo.Caption    := aValue.Titulo;
+      lblDescricao.Caption := aValue.Descricao;
     end
   );
 end;

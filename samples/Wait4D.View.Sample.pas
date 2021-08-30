@@ -14,21 +14,21 @@ uses
   Vcl.Dialogs,
   Vcl.StdCtrls,
   Vcl.ExtCtrls,
-  Wait4D.Interfaces,
   Wait4D;
 
 type
   TPageSample = class(TForm)
     btnLoading: TButton;
     btnProgress: TButton;
+    Button1: TButton;
     procedure btnProgressClick(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
 
     procedure ProcessLoading;
     procedure ProcessProgress;
     procedure btnLoadingClick(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
   private
-    FWait4D : iWait4D;
+    FWait4D: iWait4D;
     { Private declarations }
   public
     { Public declarations }
@@ -40,7 +40,8 @@ var
 implementation
 
 uses
-  Wait4DTeste;
+  Wait4DTeste,
+  Wait4D.View.Page;
 
 {$R *.dfm}
 
@@ -48,6 +49,7 @@ uses
 
 procedure TPageSample.btnLoadingClick(Sender: TObject);
 begin
+  FWait4D := TWait4D.New;
 // change title and description displayed loading
   FWait4D
     .Notificacao
@@ -59,17 +61,11 @@ begin
     .Loading
     .Executar;
 
-//  FWait4D
-//    .Form(Self)
-//    .Process(ProcessLoading)
-//    .Loading
-//    .Executar;
 end;
 
 procedure TPageSample.btnProgressClick(Sender: TObject);
 begin
-// change title and description displayed progress
-//  FWait4D.Notificacao.Titulo('Wait...').Descricao('Processing...');
+  FWait4D := TWait4D.New;
   FWait4D
     .Notificacao
       .Titulo('Wait...')
@@ -81,28 +77,38 @@ begin
     .Executar;
 end;
 
-procedure TPageSample.ProcessLoading;
+procedure TPageSample.Button1Click(Sender: TObject);
+var
+  LForm : TForm;
 begin
-// process executed in task during loading execution
-  Sleep(2000);
-// change title and description displayed loading
-  FWait4D
-    .Notificacao
-      .Titulo('Title...')
-      .Descricao('Description...');
-  FWait4D.Notificar;
-//
-  Sleep(2000);
+  LForm := TPage.Create(nil);
+  LForm.Show;
 end;
 
-procedure TPageSample.FormCreate(Sender: TObject);
+procedure TPageSample.ProcessLoading;
 begin
-  FWait4D := TWait4D.New;
+  try
+  // process executed in task during loading execution
+    Sleep(1000);
+  // change title and description displayed loading
+    FWait4D
+      .Notificacao
+        .Titulo('Title...')
+        .Descricao('Description...')
+      .&End
+    .Notificar;
+
+    Sleep(1000);
+  finally
+    FWait4D := nil;
+  end;
+
 end;
 
 procedure TPageSample.ProcessProgress;
 begin
   TModelWait4DTeste.New(FWait4D).Preencher;
+  FWait4D := nil;
 end;
 
 initialization
