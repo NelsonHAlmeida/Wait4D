@@ -52,29 +52,28 @@ begin
   FWait4D := TWait4D.New;
 // change title and description displayed loading
   FWait4D
-    .Notificacao
-      .Titulo('Wait...')
-      .Descricao('Processing...')
-    .&End
+//    .Notification
+//      .Title('Wait...')
+//      .Body('Processing...')
+//    .&End
     .Form(Self)
     .Process(ProcessLoading)
     .Loading
-    .Executar;
-
+    .Execute;
 end;
 
 procedure TPageSample.btnProgressClick(Sender: TObject);
 begin
   FWait4D := TWait4D.New;
   FWait4D
-    .Notificacao
-      .Titulo('Wait...')
-      .Descricao('Processing...')
+    .Notification
+      .Title('Wait...')
+      .Body('Processing...')
     .&End
     .Form(Self)
     .Process(ProcessProgress)
     .Progress
-    .Executar;
+    .Execute;
 end;
 
 procedure TPageSample.Button1Click(Sender: TObject);
@@ -92,11 +91,11 @@ begin
     Sleep(1000);
   // change title and description displayed loading
     FWait4D
-      .Notificacao
-        .Titulo('Title...')
-        .Descricao('Description...')
+      .Notification
+        .Title('Title...')
+        .Body('Description...')
       .&End
-    .Notificar;
+    .Notify;
 
     Sleep(1000);
   finally

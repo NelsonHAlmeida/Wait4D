@@ -21,24 +21,24 @@ uses
   Winapi.Windows;
 
 type
-  TfrmLoading = class(TForm, iWait4DNotificador)
+  TfrmLoading = class(TForm, iWait4DNotifier)
     Shape1: TShape;
     ActivityIndicator1: TActivityIndicator;
-    lblTitulo: TLabel;
-    lblDescricao: TLabel;
+    lblTitle: TLabel;
+    lblBody: TLabel;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
 
   public
-    procedure Notificar(aValue : iWait4DNotificacao);
-    function Ref: iWait4DNotificador;
+    procedure Notify(aValue : iWait4DNotification);
+    function Ref: iWait4DNotifier;
 
   end;
 
 implementation
 
 uses
-  System.Threading, Wait4D.Notificacao;
+  System.Threading;
 
 {$R *.dfm}
 
@@ -49,18 +49,18 @@ begin
   Action := TCloseAction.caFree;
 end;
 
-procedure TfrmLoading.Notificar(aValue : iWait4DNotificacao);
+procedure TfrmLoading.Notify(aValue : iWait4DNotification);
 begin
   TThread.Queue(nil,
   procedure
     begin
-      lblTitulo.Caption    := aValue.Titulo;
-      lblDescricao.Caption := aValue.Descricao;
+      lblTitle.Caption    := aValue.Title;
+      lblBody.Caption := aValue.Body;
     end
   );
 end;
 
-function TfrmLoading.Ref: iWait4DNotificador;
+function TfrmLoading.Ref: iWait4DNotifier;
 begin
   Result:= Self;
 end;

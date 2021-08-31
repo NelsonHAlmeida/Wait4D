@@ -10,38 +10,37 @@ type
 // Interfaces
   iWait4D = interface;
 
-  iWait4DNotificacao = interface
+  iWait4DNotification = interface
     ['{2139A24A-9E6E-4AE4-AB92-E7FF1F6F91CF}']
-    function Titulo : string; overload;
-    function Descricao : string; overload;
-    function PosicaoAtual : integer; overload;
-    function PosicaoMaxima : integer; overload;
-
-    function Titulo(aTitulo : string) : iWait4DNotificacao; overload;
-    function Descricao(aDescricao : string) : iWait4DNotificacao; overload;
-    function PosicaoAtual(aPosicaoAtual : integer) : iWait4DNotificacao; overload;
-    function PosicaoMaxima(aPosicaoMaxima : integer) : iWait4DNotificacao; overload;
+    function Title : string; overload;
+    function Title(aValue : string) : iWait4DNotification; overload;
+    function Body : string; overload;
+    function Body(aValue: string) : iWait4DNotification; overload;
+    function PositionCurrent : integer; overload;
+    function PositionCurrent(aValue : integer) : iWait4DNotification; overload;
+    function PositionFinal : integer; overload;
+    function PositionFinal(aValue : integer) : iWait4DNotification; overload;
 
     function &End : iWait4D;
   end;
 
-  iWait4DNotificador = interface
+  iWait4DNotifier = interface
     ['{53B56CFE-CA2C-4AE4-BA09-6D848D53F164}']
     procedure Show;
     procedure Close;
-    function Ref: iWait4DNotificador;
-    procedure Notificar(aValue : iWait4DNotificacao);
+    function Ref: iWait4DNotifier;
+    procedure Notify(aValue : iWait4DNotification);
   end;
 
   iWait4D = interface
     ['{D6B198AC-CD72-4A41-8A6A-E42E413EFC1C}']
-    function Notificacao : iWait4DNotificacao;
+    function Notification : iWait4DNotification;
     function Form (aForm : TObject) : iWait4D;
     function Process (aProcess : TProc) : iWait4D;
     function Loading : iWait4D;
     function Progress : iWait4D;
-    function Notificar : iWait4D;
-    procedure Executar;
+    function Notify : iWait4D;
+    procedure Execute;
   end;
 
   iWait4DTeste = interface
@@ -53,36 +52,36 @@ type
 
   TWait4D = class(TInterfacedObject, iWait4D)
   private
-    FNotificador : iWait4DNotificador;
-    FNotificacao : iWait4DNotificacao;
+    FNotifier : iWait4DNotifier;
+    FNotification : iWait4DNotification;
     FForm : TForm;
     FProcess : TProc;
   public
     constructor Create;
     destructor Destroy; override;
     class function New: iWait4D;
-    function Notificacao : iWait4DNotificacao;
+    function Notification : iWait4DNotification;
     function Form (aForm : TObject) : iWait4D;
     function Process (aProcess : TProc) : iWait4D;
     function Loading : iWait4D;
     function Progress : iWait4D;
-    function Notificar : iWait4D;
-    procedure Executar;
+    function Notify : iWait4D;
+    procedure Execute;
   end;
 
 implementation
 
 uses
-  Wait4D.Notificacao,
+  Wait4D.Notification,
   Wait4D.Services.Tasks;
 
 { TWait4DFactory }
 
 constructor TWait4D.Create;
 begin
-  if not Assigned(FNotificacao) then
-    FNotificacao := TWait4DNotificacao.New(Self);
-  FNotificacao.Titulo('Aguarde...').Descricao('Processando...'); //Default
+  if not Assigned(FNotification) then
+    FNotification := TWait4DNotification.New(Self);
+  FNotification.Title('Wait..').Body('Processing...'); //Default
 end;
 
 destructor TWait4D.Destroy;
@@ -90,15 +89,15 @@ begin
   inherited;
 end;
 
-procedure TWait4D.Executar;
+procedure TWait4D.Execute;
 begin
   if not Assigned(FProcess) then
-    raise Exception.Create('Informar Processo a ser realizado');
+    raise Exception.Create('Process not informed');
 
-  if not Assigned(FNotificador) then
-    raise Exception.Create('Informar Notificador(Loading/Progress)');
+  if not Assigned(FNotifier) then
+    raise Exception.Create('Notifier (Loading/Progress) not informed');
 
-  TServiceTask.Executar(FProcess, FNotificador, FNotificacao, FForm);
+  TServiceTask.Executar(FProcess, FNotifier, FNotification, FForm);
 end;
 
 function TWait4D.Form(aForm: TObject): iWait4D;
@@ -110,7 +109,7 @@ end;
 function TWait4D.Loading: iWait4D;
 begin
   Result := Self;
-  FNotificador := TServiceTask.ExecutaLoading;
+  FNotifier := TServiceTask.ExecutaLoading;
 end;
 
 class function TWait4D.New: iWait4D;
@@ -118,14 +117,14 @@ begin
   Result:= Self.Create;
 end;
 
-function TWait4D.Notificacao: iWait4DNotificacao;
+function TWait4D.Notification: iWait4DNotification;
 begin
-  Result := FNotificacao;
+  Result := FNotification;
 end;
 
-function TWait4D.Notificar: iWait4D;
+function TWait4D.Notify: iWait4D;
 begin
-  FNotificador.Notificar(FNotificacao);
+  FNotifier.Notify(FNotification);
 end;
 
 function TWait4D.Process(aProcess: TProc): iWait4D;
@@ -137,7 +136,7 @@ end;
 function TWait4D.Progress: iWait4D;
 begin
   Result := Self;
-  FNotificador := TServiceTask.ExecutaProgress;
+  FNotifier := TServiceTask.ExecutaProgress;
 end;
 
 end.

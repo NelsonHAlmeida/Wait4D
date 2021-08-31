@@ -104,8 +104,8 @@
             <Form>PageSample</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="..\src\Wait4D.View.Fundo.pas">
-            <Form>frmFundo</Form>
+        <DCCReference Include="..\src\Wait4D.View.Background.pas">
+            <Form>frmBackground</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="..\src\Wait4D.View.Loading.pas">
@@ -117,7 +117,7 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="..\src\Wait4D.Services.Tasks.pas"/>
-        <DCCReference Include="..\src\Wait4D.Notificacao.pas"/>
+        <DCCReference Include="..\src\Wait4D.Notification.pas"/>
         <DCCReference Include="..\src\Wait4D.pas"/>
         <DCCReference Include="..\src\Wait4DTeste.pas"/>
         <DCCReference Include="Wait4D.View.Page.pas">

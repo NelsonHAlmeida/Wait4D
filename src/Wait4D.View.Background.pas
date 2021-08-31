@@ -1,4 +1,4 @@
-unit Wait4D.View.Fundo;
+unit Wait4D.View.Background;
 
 interface
 
@@ -15,7 +15,7 @@ uses
   Vcl.ExtCtrls;
 
 type
-  TfrmFundo = class(TForm)
+  TfrmBackground = class(TForm)
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
@@ -27,7 +27,7 @@ implementation
 
 {$R *.dfm}
 
-procedure TfrmFundo.FormClose(Sender: TObject; var Action: TCloseAction);
+procedure TfrmBackground.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   Action:= caFree;
 end;
