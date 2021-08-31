@@ -44,16 +44,16 @@ var
   i, LTotal: Integer;
 begin
   LTotal := 50;
-  FParent.Notificacao.Titulo('Sincronizando...').PosicaoMaxima(LTotal);
+  FParent.Notification.Title('Sincronizando...').PositionFinal(LTotal);
   for i := 1 to LTotal do
   begin
     Sleep(100);
     FParent.
-      Notificacao
-      .PosicaoAtual(i)
-      .Descricao('Registro ' + i.ToString + ' de ' + LTotal.ToString)
+      Notification
+      .PositionCurrent(i)
+      .Body('Registro ' + i.ToString + ' de ' + LTotal.ToString)
     .&End
-    .Notificar;
+    .Notify;
   end;
 
 end;

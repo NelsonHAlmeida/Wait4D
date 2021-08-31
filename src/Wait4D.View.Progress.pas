@@ -22,24 +22,20 @@ uses
   Winapi.Windows;
 
 type
-  TfrmProgress = class(TForm, iWait4DNotificador)
+  TfrmProgress = class(TForm, iWait4DNotifier)
     Shape1: TShape;
     ProgressBar1: TProgressBar;
-    lblTitulo: TLabel;
-    lblDescricao: TLabel;
-    procedure FormCreate(Sender: TObject);
+    lblTitle: TLabel;
+    lblBody: TLabel;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
 
   public
-    procedure Notificar(aValue : iWait4DNotificacao);
-    function Ref: iWait4DNotificador;
+    procedure Notify(aValue : iWait4DNotification);
+    function Ref: iWait4DNotifier;
   end;
 
 implementation
-
-uses
-  Wait4D.Notificacao;
 
 {$R *.dfm}
 
@@ -50,28 +46,20 @@ begin
   Action:= TCloseAction.caFree;
 end;
 
-procedure TfrmProgress.FormCreate(Sender: TObject);
+procedure TfrmProgress.Notify(aValue : iWait4DNotification);
 begin
-//  if not Assigned(FNotificacao) then
-//    FNotificacao := TWait4DNotificacao.New(nil);
-//  FNotificacao.PosicaoAtual(0);
-//  if FNotificacao.Titulo = EmptyStr then
-//    FNotificacao.Titulo('Sincronizando...').Descricao('');
-end;
-
-procedure TfrmProgress.Notificar(aValue : iWait4DNotificacao);
-begin
-  TThread.Queue(nil, procedure()
+  TThread.Queue(nil,
+    procedure
     begin
-      ProgressBar1.Position := aValue.PosicaoAtual;  //aki Verificar
-      ProgressBar1.Max := aValue.PosicaoMaxima;
-      lblTitulo.Caption := aValue.Titulo;
-      lblDescricao.Caption := aValue.Descricao;
+      ProgressBar1.Position := aValue.PositionCurrent;  //aki Verificar
+      ProgressBar1.Max := aValue.PositionFinal;
+      lblTitle.Caption := aValue.Title;
+      lblBody.Caption := aValue.Body;
     end
   );
 end;
 
-function TfrmProgress.Ref: iWait4DNotificador;
+function TfrmProgress.Ref: iWait4DNotifier;
 begin
   Result:= Self;
 end;

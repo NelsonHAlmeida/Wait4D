@@ -16,11 +16,11 @@ type TServiceTask = class
   private
 
   public
-    class function ExecutaLoading : iWait4DNotificador;
-    class function ExecutaProgress : iWait4DNotificador;
+    class function ExecutaLoading : iWait4DNotifier;
+    class function ExecutaProgress : iWait4DNotifier;
     class procedure Executar(aProc : TProc;
-                             aNotificador : iWait4DNotificador;
-                             aNotificacao : iWait4DNotificacao;
+                             aNotificador : iWait4DNotifier;
+                             aNotificacao : iWait4DNotification;
                              aForm : TForm);
 end;
 
@@ -29,25 +29,25 @@ implementation
 uses
   Dialogs,
 
-  Wait4D.View.Fundo,
+  Wait4D.View.Background,
   Wait4D.View.Loading,
   Wait4D.View.Progress;
 
 { TServiceTask }
 
-class function TServiceTask.ExecutaLoading : iWait4DNotificador;
+class function TServiceTask.ExecutaLoading : iWait4DNotifier;
 begin
   Result := TfrmLoading.Create(nil);
 end;
 
-class function TServiceTask.ExecutaProgress: iWait4DNotificador;
+class function TServiceTask.ExecutaProgress: iWait4DNotifier;
 begin
   Result := TfrmProgress.Create(nil);
 end;
 
 class procedure TServiceTask.Executar(aProc : TProc;
-                                      aNotificador : iWait4DNotificador;
-                                      aNotificacao : iWait4DNotificacao;
+                                      aNotificador : iWait4DNotifier;
+                                      aNotificacao : iWait4DNotification;
                                       aForm: TForm);
 var
   LTask: iTask;
@@ -56,7 +56,7 @@ var
 begin
 // Esmaecer Tela
 //  if frmFundo = nil then
-  LFundo:= TfrmFundo.Create(nil);
+  LFundo:= TfrmBackground.Create(nil);
   LFundo.Left:= aForm.Left+8;
   LFundo.Top:= aForm.Top;
   LFundo.Width:= aForm.Width-16;
@@ -68,7 +68,7 @@ begin
   TForm(aNotificador.Ref).Top:= LFundo.Top + 30 + Trunc((aform.Height-40-TForm(aNotificador.Ref).Height)/2);
 
   aNotificador.Show;
-  aNotificador.Notificar(aNotificacao);
+  aNotificador.Notify(aNotificacao);
 
   LTask := TTask.Create(
   procedure

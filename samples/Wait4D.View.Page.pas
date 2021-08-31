@@ -44,7 +44,7 @@ begin
          end;
        end)
     .Loading
-    .Executar;
+    .Execute;
 end;
 
 procedure TPage.FormClose(Sender: TObject; var Action: TCloseAction);

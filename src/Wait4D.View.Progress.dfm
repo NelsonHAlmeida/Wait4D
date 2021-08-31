@@ -15,7 +15,6 @@ object frmProgress: TfrmProgress
   Position = poOwnerFormCenter
   Visible = True
   OnClose = FormClose
-  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object Shape1: TShape
@@ -31,14 +30,14 @@ object frmProgress: TfrmProgress
     ExplicitWidth = 370
     ExplicitHeight = 138
   end
-  object lblTitulo: TLabel
+  object lblTitle: TLabel
     Left = 0
     Top = 20
     Width = 300
     Height = 15
     Alignment = taCenter
     AutoSize = False
-    Caption = 'lblTitulo'
+    Caption = 'lblTitle'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12
@@ -47,14 +46,14 @@ object frmProgress: TfrmProgress
     ParentFont = False
     Layout = tlCenter
   end
-  object lblDescricao: TLabel
+  object lblBody: TLabel
     Left = 0
     Top = 40
     Width = 300
     Height = 15
     Alignment = taCenter
     AutoSize = False
-    Caption = 'lblDescricao'
+    Caption = 'lblBody'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12

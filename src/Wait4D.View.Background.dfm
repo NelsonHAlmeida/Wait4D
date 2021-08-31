@@ -1,10 +1,10 @@
-object frmFundo: TfrmFundo
+object frmBackground: TfrmBackground
   Left = 0
   Top = 0
   AlphaBlend = True
   AlphaBlendValue = 160
   BorderStyle = bsNone
-  Caption = 'frmFundo'
+  Caption = 'frmBackground'
   ClientHeight = 444
   ClientWidth = 699
   Color = clBlack

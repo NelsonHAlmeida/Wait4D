@@ -28,14 +28,14 @@ object frmLoading: TfrmLoading
     ExplicitWidth = 428
     ExplicitHeight = 205
   end
-  object lblTitulo: TLabel
+  object lblTitle: TLabel
     Left = 0
     Top = 69
     Width = 300
     Height = 15
     Alignment = taCenter
     AutoSize = False
-    Caption = 'lblTitulo'
+    Caption = 'lblTitle'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12
@@ -44,14 +44,14 @@ object frmLoading: TfrmLoading
     ParentFont = False
     Layout = tlCenter
   end
-  object lblDescricao: TLabel
+  object lblBody: TLabel
     Left = 0
     Top = 90
     Width = 300
     Height = 15
     Alignment = taCenter
     AutoSize = False
-    Caption = 'lblDescricao'
+    Caption = 'lblBody'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12
